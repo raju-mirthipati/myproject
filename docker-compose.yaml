@@ -3,30 +3,30 @@ networks:
   roboshop:
     driver: bridge
 volumes:
-  mongodb:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/ubuntu/mongodb
   mysql:
     driver: local
     driver_opts:
-      type: none
       o: bind
+      type: none
       device: /home/ubuntu/mysql
   redis:
     driver: local
     driver_opts:
-      type: none
       o: bind
+      type: none
       device: /home/ubuntu/redis
   rabbitmq:
     driver: local
     driver_opts:
-      type: none
       o: bind
+      type: none
       device: /home/ubuntu/rabbitmq
+  mongodb:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/ubuntu/mongodb
 
 services:
   web:
@@ -44,18 +44,19 @@ services:
     image: mongodb:v1
     container_name: mongodb
     volumes:
-      -mongodb:/data/db
+    - mongodb:/data/db
 
   catalogue:
     image: catalogue:v2
     container_name: catalogue
     depends_on:
     - mongodb
+
   redis:
     image: redis
     container_name: redis
     volumes:
-      -redis:/data
+    - redis:/data
 
   user:
     image: user:v1
@@ -63,17 +64,19 @@ services:
     depends_on:
     - mongodb
     - redis
+
   cart:
     image: cart:v1
     container_name: cart
     depends_on:
     - redis
     - catalogue
+
   mysql:
     image: mysql:v1
     container_name: mysql
     volumes:
-      -mysql:/var/lib/mysql
+    - mysql:/var/lib/mysql
 
   shipping:
     image: shipping:v1
@@ -85,13 +88,14 @@ services:
     image: rabbitmq
     container_name: rabbitmq
     volumes:
-      -rabbitmq:/var/lib/rabbitmq
+    - rabbitmq:/var/lib/rabbitmq
 
   payment:
     image: payment:v1
     container_name: payment
     depends_on:
     - rabbitmq
+
   ratings:
     image: ratings:v1
     container_name: ratings
