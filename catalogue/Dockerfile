@@ -2,7 +2,7 @@ FROM node:14
 
 ENV INSTANA_AUTO_PROFILE true
 
-RUN useradd catalogue
+RUN adduser catalogue && addgroup catalogue
 
 RUN chown catalogue:catalogue /opt/server
 
