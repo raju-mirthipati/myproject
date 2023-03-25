@@ -4,9 +4,14 @@ ENV INSTANA_AUTO_PROFILE true
 
 WORKDIR /opt/server
 
-RUN useradd catalogue1 && addgroup catalogue && usermod -aG catalogue1 catalogue
+# create the 'catalogue' group
+RUN addgroup catalogue
 
-RUN chown catalogue:catalogue /opt/server
+# create the 'catalogue1' user and add it to the 'catalogue' group
+RUN useradd -m -s /bin/bash -g catalogue catalogue1 && usermod -aG catalogue catalogue1
+
+# change the ownership of the '/opt/server' directory to 'catalogue:catalogue'
+RUN chown catalogue1:catalogue /opt/server
 
 USER catalogue1
 
@@ -19,4 +24,3 @@ RUN npm install
 COPY server.js /opt/server/
 
 CMD ["node", "server.js"]
-
