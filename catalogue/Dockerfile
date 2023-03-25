@@ -4,7 +4,7 @@ ENV INSTANA_AUTO_PROFILE true
 
 WORKDIR /opt/server
 
-RUN addgroup catalogue && adduser catalogue1 && usermod -aG catalogue1 catalogue
+RUN useradd catalogue1 && addgroup catalogue && usermod -aG catalogue1 catalogue
 
 RUN chown catalogue:catalogue /opt/server
 
